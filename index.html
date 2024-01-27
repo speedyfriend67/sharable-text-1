@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shareable Text</title>
+<style>
+  textarea {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<h1>Shareable Text</h1>
+
+<textarea id="textToShare" placeholder="Enter your text here..."></textarea>
+<button onclick="shareText()">Share</button>
+
+<script>
+function shareText() {
+  var text = document.getElementById("textToShare").value;
+  
+  if (!navigator.share) {
+    alert("Your browser doesn't support sharing.");
+    return;
+  }
+  
+  navigator.share({
+    title: "Shared Text",
+    text: text
+  })
+  .then(() => console.log("Text shared successfully"))
+  .catch(error => console.error("Error sharing text:", error));
+}
+</script>
+
+</body>
+</html>
