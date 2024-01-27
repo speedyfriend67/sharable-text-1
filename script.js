@@ -11,23 +11,23 @@ function getTextFromURL() {
   return params.get('text') || '';
 }
 
-// Function to generate shared link
+// Function to generate shared link with custom text
 function generateSharedLink() {
   var text = document.getElementById("textToShare").value;
   var customPath = document.getElementById("customPath").value.trim();
-  var customLinkText = document.getElementById("customLinkText").value.trim();
-  
+  var customLinkText = prompt("Enter custom link text:") || ""; // Prompt for custom link text
+
   var sharedLink = window.location.href.split('?')[0] + '?text=' + encodeURIComponent(text);
-  
+
   if (customPath !== "") {
     sharedLink += '/' + encodeURIComponent(customPath);
   }
-  
+
   if (customLinkText !== "") {
     sharedLink += '&custom=' + encodeURIComponent(customLinkText);
   }
-  
-  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
+
+  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + customLinkText + "</a>";
 }
 
 // Function to copy shared link to clipboard
