@@ -32,39 +32,48 @@
 <p id="sharedLink"></p>
 
 <script>
-// Function to display shared link
-function displaySharedLink(textId) {
-  var sharedLink = window.location.href.split('?')[0] + '?id=' + textId;
-  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
+// Function to update URL with text parameter
+function updateURL(text) {
+  var baseUrl = window.location.href.split('?')[0];
+  var newUrl = baseUrl + '?text=' + encodeURIComponent(text);
+  window.history.pushState({ path: newUrl }, '', newUrl);
 }
 
-// Function to share text
-function shareText() {
-  var text = document.getElementById("textToShare").value;
-  
-  fetch('save_text.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ text: text })
-  })
-  .then(response => response.json())
-  .then(data => {
-    displaySharedLink(data.id);
-  })
-  .catch(error => console.error('Error:', error));
+// Function to retrieve text from URL parameter
+function getTextFromURL() {
+  var params = new URLSearchParams(window.location.search);
+  return params.get('text') || '';
+}
+
+// Function to display shared link
+function displaySharedLink() {
+  var sharedText = getTextFromURL();
+  var sharedLink = window.location.href;
+  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
 }
 
 // Call function to display shared link when page loads
 window.onload = function() {
-  var urlParams = new URLSearchParams(window.location.search);
-  var textId = urlParams.get('id');
-  if (textId) {
-    displaySharedLink(textId);
+  displaySharedLink();
+  
+  // Retrieve shared text from local storage if available
+  var sharedText = localStorage.getItem('sharedText');
+  if (sharedText) {
+    document.getElementById("textToShare").value = sharedText;
   }
 };
+
+// Function to share text
+function shareText() {
+  var text = document.getElementById("textToShare").value;
+  updateURL(text);
+  displaySharedLink();
+  
+  // Save shared text to local storage
+  localStorage.setItem('sharedText', text);
+}
 </script>
 
 </body>
 </html>
+
