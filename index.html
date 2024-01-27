@@ -4,37 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shareable Text</title>
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    max-width: 600px;
-    margin: auto;
-  }
-  .box {
-    margin-bottom: 20px;
-  }
-  textarea {
-    width: 100%;
-    height: 150px;
-    margin-bottom: 10px;
-  }
-  input[type="text"] {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #0056b3;
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -42,9 +12,13 @@
   <div class="box">
     <h1>Input Text</h1>
     <textarea id="textToShare" placeholder="Enter your text here..."></textarea>
+    <input type="text" id="customPath" placeholder="Custom path (optional)">
     <input type="text" id="customLinkText" placeholder="Enter custom link text...">
     <button onclick="generateSharedLink()">Generate Link</button>
+    <button onclick="copyToClipboard()">Copy Link</button>
     <button onclick="saveTextLocally()">Save Locally</button>
+    <button onclick="clearText()">Clear Text</button>
+    <span id="charCount">Characters: 0</span>
   </div>
   
   <div class="box">
@@ -53,52 +27,7 @@
   </div>
 </div>
 
-<script>
-// Function to update URL with text parameter
-function updateURL(text) {
-  var baseUrl = window.location.href.split('?')[0];
-  var newUrl = baseUrl + '?text=' + encodeURIComponent(text);
-  window.history.pushState({ path: newUrl }, '', newUrl);
-}
-
-// Function to retrieve text from URL parameter
-function getTextFromURL() {
-  var params = new URLSearchParams(window.location.search);
-  return params.get('text') || '';
-}
-
-// Function to generate shared link
-function generateSharedLink() {
-  var text = document.getElementById("textToShare").value;
-  var customLinkText = document.getElementById("customLinkText").value;
-  if (!customLinkText.trim()) {
-    customLinkText = text;
-  }
-  var sharedLink = window.location.href.split('?')[0] + '?text=' + encodeURIComponent(text);
-  
-  if (customLinkText.trim() !== "") {
-    sharedLink = sharedLink + '&custom=' + encodeURIComponent(customLinkText);
-  }
-  
-  var encodedLink = btoa(sharedLink); // Encode link using Base64
-  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + encodedLink + "'>" + encodedLink + "</a>";
-}
-
-// Function to save text locally
-function saveTextLocally() {
-  var text = document.getElementById("textToShare").value;
-  localStorage.setItem('savedText', text);
-  alert('Text saved locally.');
-}
-
-// Call function to display shared link when page loads
-window.onload = function() {
-  var sharedText = getTextFromURL();
-  document.getElementById("textToShare").value = sharedText;
-  generateSharedLink();
-};
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
 
