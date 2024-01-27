@@ -32,29 +32,35 @@
 <p id="sharedLink"></p>
 
 <script>
+// Function to save text to local storage
+function saveTextToStorage(text) {
+  localStorage.setItem('sharedText', text);
+}
+
+// Function to retrieve text from local storage
+function getTextFromStorage() {
+  return localStorage.getItem('sharedText') || '';
+}
+
+// Function to display shared link
+function displaySharedLink() {
+  var sharedText = getTextFromStorage();
+  var sharedLink = window.location.href + "?text=" + encodeURIComponent(sharedText);
+  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
+}
+
+// Call function to display shared link when page loads
+window.onload = function() {
+  displaySharedLink();
+};
+
+// Function to share text
 function shareText() {
   var text = document.getElementById("textToShare").value;
-  
-  if (navigator.share) {
-    navigator.share({
-      title: "Shared Text",
-      text: text
-    })
-    .then(() => console.log("Text shared successfully"))
-    .catch(error => console.error("Error sharing text:", error));
-  } else {
-    // Fallback: Copy text to clipboard or provide shareable link
-    var sharedLink = window.location.href + "?text=" + encodeURIComponent(text);
-    
-    // You can customize the fallback behavior here, for example:
-    // Copying text to clipboard
-    navigator.clipboard.writeText(text)
-      .then(() => alert("Text copied to clipboard. Shareable link: " + sharedLink))
-      .catch(error => console.error("Error copying text:", error));
-  }
+  saveTextToStorage(text);
+  displaySharedLink();
 }
 </script>
 
 </body>
 </html>
-
