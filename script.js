@@ -37,10 +37,9 @@ function updateURL(text, customPath) {
   window.history.pushState({ path: newUrl }, '', newUrl);
 }
 
-
 // Function to copy shared link to clipboard
 function copyToClipboard() {
-  var sharedLink = document.getElementById("sharedLink").innerText;
+  var sharedLink = document.getElementById("sharedLink").querySelector("a").href;
   navigator.clipboard.writeText(sharedLink)
     .then(() => alert('Link copied to clipboard'))
     .catch(error => console.error('Error copying link:', error));
@@ -103,6 +102,7 @@ window.onload = function() {
   updateCharCount();
   displaySavedTexts();
 };
+
 // Add event listener for input text area
 document.getElementById("textToShare").addEventListener("input", function() {
   updateCharCount();
