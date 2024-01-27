@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shareable Text</title>
 <style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 600px;
+    margin: auto;
+  }
+  .box {
+    margin-bottom: 20px;
+  }
   textarea {
     width: 100%;
     height: 150px;
@@ -28,13 +38,19 @@
 </head>
 <body>
 
-<h1>Shareable Text</h1>
-
-<textarea id="textToShare" placeholder="Enter your text here..."></textarea>
-<input type="text" id="customLinkText" placeholder="Enter custom link text...">
-<button onclick="generateSharedLink()">Generate Link</button>
-
-<p id="sharedLink"></p>
+<div class="container">
+  <div class="box">
+    <h1>Input Text</h1>
+    <textarea id="textToShare" placeholder="Enter your text here..."></textarea>
+    <input type="text" id="customLinkText" placeholder="Enter custom link text...">
+    <button onclick="generateSharedLink()">Generate Link</button>
+  </div>
+  
+  <div class="box">
+    <h1>Shared Output</h1>
+    <p id="sharedLink"></p>
+  </div>
+</div>
 
 <script>
 // Function to update URL with text parameter
@@ -54,6 +70,9 @@ function getTextFromURL() {
 function generateSharedLink() {
   var text = document.getElementById("textToShare").value;
   var customLinkText = document.getElementById("customLinkText").value;
+  if (!customLinkText.trim()) {
+    customLinkText = text;
+  }
   var sharedLink = window.location.href.split('?')[0] + '?text=' + encodeURIComponent(text);
   
   if (customLinkText.trim() !== "") {
@@ -70,9 +89,6 @@ window.onload = function() {
   generateSharedLink();
 };
 </script>
-
-</body>
-</html>
 
 </body>
 </html>
