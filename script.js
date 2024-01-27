@@ -96,13 +96,13 @@ function updateCharCount() {
 
 // Call function to display shared link when page loads
 window.onload = function() {
-  var sharedText = getTextFromURL();
+  var params = new URLSearchParams(window.location.search);
+  var sharedText = params.get('text') || '';
   document.getElementById("textToShare").value = sharedText;
-  generateSharedLink();
+  generateSharedLink(); // Generate shared link with custom URL
   updateCharCount();
   displaySavedTexts();
 };
-
 // Add event listener for input text area
 document.getElementById("textToShare").addEventListener("input", function() {
   updateCharCount();
