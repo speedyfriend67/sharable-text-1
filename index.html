@@ -10,6 +10,10 @@
     height: 150px;
     margin-bottom: 10px;
   }
+  input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
   button {
     padding: 10px 20px;
     background-color: #007bff;
@@ -27,7 +31,8 @@
 <h1>Shareable Text</h1>
 
 <textarea id="textToShare" placeholder="Enter your text here..."></textarea>
-<button onclick="shareText()">Share</button>
+<input type="text" id="customLinkText" placeholder="Enter custom link text...">
+<button onclick="generateSharedLink()">Generate Link</button>
 
 <p id="sharedLink"></p>
 
@@ -45,34 +50,29 @@ function getTextFromURL() {
   return params.get('text') || '';
 }
 
-// Function to display shared link
-function displaySharedLink() {
-  var sharedText = getTextFromURL();
-  var sharedLink = window.location.href;
+// Function to generate shared link
+function generateSharedLink() {
+  var text = document.getElementById("textToShare").value;
+  var customLinkText = document.getElementById("customLinkText").value;
+  var sharedLink = window.location.href.split('?')[0] + '?text=' + encodeURIComponent(text);
+  
+  if (customLinkText.trim() !== "") {
+    sharedLink = sharedLink + '&custom=' + encodeURIComponent(customLinkText);
+  }
+  
   document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
 }
 
 // Call function to display shared link when page loads
 window.onload = function() {
-  displaySharedLink();
-  
-  // Retrieve shared text from local storage if available
-  var sharedText = localStorage.getItem('sharedText');
-  if (sharedText) {
-    document.getElementById("textToShare").value = sharedText;
-  }
+  var sharedText = getTextFromURL();
+  document.getElementById("textToShare").value = sharedText;
+  generateSharedLink();
 };
-
-// Function to share text
-function shareText() {
-  var text = document.getElementById("textToShare").value;
-  updateURL(text);
-  displaySharedLink();
-  
-  // Save shared text to local storage
-  localStorage.setItem('sharedText', text);
-}
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
