@@ -1,16 +1,3 @@
-// Function to update URL with text parameter
-function updateURL(text) {
-  var baseUrl = window.location.href.split('?')[0];
-  var newUrl = baseUrl + '?text=' + encodeURIComponent(text);
-  window.history.pushState({ path: newUrl }, '', newUrl);
-}
-
-// Function to retrieve text from URL parameter
-function getTextFromURL() {
-  var params = new URLSearchParams(window.location.search);
-  return params.get('text') || '';
-}
-
 // Function to generate shared link with custom text
 function generateSharedLink() {
   var text = document.getElementById("textToShare").value;
@@ -104,3 +91,4 @@ document.getElementById("textToShare").addEventListener("input", function() {
 document.getElementById("searchText").addEventListener("input", function() {
   displaySavedTexts();
 });
+
