@@ -80,7 +80,8 @@ function generateSharedLink() {
     sharedLink = sharedLink + '&custom=' + encodeURIComponent(customLinkText);
   }
   
-  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
+  var encodedLink = btoa(sharedLink); // Encode link using Base64
+  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + encodedLink + "'>" + encodedLink + "</a>";
 }
 
 // Function to save text locally
