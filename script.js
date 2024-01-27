@@ -51,12 +51,15 @@ function saveTextLocally() {
 // Function to display locally saved texts
 function displaySavedTexts() {
   var savedTexts = JSON.parse(localStorage.getItem('savedTexts')) || [];
+  var searchText = document.getElementById("searchText").value.trim().toLowerCase();
   var list = document.getElementById("savedTexts");
   list.innerHTML = "";
   savedTexts.forEach(function(text) {
-    var listItem = document.createElement("li");
-    listItem.textContent = text;
-    list.appendChild(listItem);
+    if (text.toLowerCase().includes(searchText)) {
+      var listItem = document.createElement("li");
+      listItem.textContent = text;
+      list.appendChild(listItem);
+    }
   });
 }
 
@@ -91,4 +94,9 @@ window.onload = function() {
 // Add event listener for input text area
 document.getElementById("textToShare").addEventListener("input", function() {
   updateCharCount();
+});
+
+// Add event listener for search input
+document.getElementById("searchText").addEventListener("input", function() {
+  displaySavedTexts();
 });
