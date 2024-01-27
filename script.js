@@ -58,6 +58,10 @@ function displaySavedTexts() {
     if (text.toLowerCase().includes(searchText)) {
       var listItem = document.createElement("li");
       listItem.textContent = text;
+      listItem.addEventListener('click', function() {
+        document.getElementById("textToShare").value = text;
+        generateSharedLink();
+      });
       list.appendChild(listItem);
     }
   });
