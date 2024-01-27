@@ -7,7 +7,7 @@ function generateSharedLink() {
   var sharedLink = window.location.href.split('?')[0] + '?text=' + encodeURIComponent(text);
 
   if (customPath !== "") {
-    sharedLink += '/' + encodeURIComponent(customPath);
+    sharedLink += '&customPath=' + encodeURIComponent(customPath);
   }
 
   if (customLinkText !== "") {
@@ -20,7 +20,23 @@ function generateSharedLink() {
   customLink.href = sharedLink;
   customLink.textContent = customLinkText;
   linkElement.appendChild(customLink);
+
+  // Update URL parameters with shared text and custom path
+  updateURL(text, customPath);
 }
+
+// Function to update URL parameters with shared text and custom path
+function updateURL(text, customPath) {
+  var baseUrl = window.location.href.split('?')[0];
+  var newUrl = baseUrl + '?text=' + encodeURIComponent(text);
+
+  if (customPath !== "") {
+    newUrl += '&customPath=' + encodeURIComponent(customPath);
+  }
+
+  window.history.pushState({ path: newUrl }, '', newUrl);
+}
+
 
 // Function to copy shared link to clipboard
 function copyToClipboard() {
