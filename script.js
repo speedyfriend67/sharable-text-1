@@ -1,63 +1,16 @@
-// Function to generate shared link with custom text
-function generateSharedLink() {
-  var text = document.getElementById("textToShare").value;
-  var customPath = document.getElementById("customPath").value.trim();
-  var customLinkText = prompt("Enter custom link text:") || ""; // Prompt for custom link text
-
-  var sharedLink = window.location.href.split('?')[0] + '?text=' + encodeURIComponent(text);
-
-  if (customPath !== "") {
-    sharedLink += '&customPath=' + encodeURIComponent(customPath);
-  }
-
-  if (customLinkText !== "") {
-    sharedLink += '&custom=' + encodeURIComponent(customLinkText);
-  }
-
-  var linkElement = document.getElementById("sharedLink");
-  linkElement.innerHTML = ""; // Clear existing content
-  var customLink = document.createElement("a");
-  customLink.href = sharedLink;
-  customLink.textContent = customLinkText;
-  linkElement.appendChild(customLink);
-
-  // Update URL parameters with shared text and custom path
-  updateURL(text, customPath);
-}
-
-// Function to update URL parameters with shared text and custom path
-function updateURL(text, customPath) {
-  var baseUrl = window.location.href.split('?')[0];
-  var newUrl = baseUrl + '?text=' + encodeURIComponent(text);
-
-  if (customPath !== "") {
-    newUrl += '&customPath=' + encodeURIComponent(customPath);
-  }
-
-  window.history.pushState({ path: newUrl }, '', newUrl);
-}
-
-// Function to copy shared link to clipboard
-function copyToClipboard() {
-  var sharedLink = document.getElementById("sharedLink").querySelector("a").href;
-  navigator.clipboard.writeText(sharedLink)
-    .then(() => alert('Link copied to clipboard'))
-    .catch(error => console.error('Error copying link:', error));
-}
-
 // Function to save text locally
 function saveTextLocally() {
   var text = document.getElementById("textToShare").value;
-  var savedTexts = JSON.parse(localStorage.getItem('savedTexts')) || [];
+  var savedTexts = JSON.parse(getCookie('savedTexts')) || [];
   savedTexts.push(text);
-  localStorage.setItem('savedTexts', JSON.stringify(savedTexts));
+  setCookie('savedTexts', JSON.stringify(savedTexts), 365); // Cookie expires in 365 days
   displaySavedTexts();
   alert('Text saved locally.');
 }
 
 // Function to display locally saved texts
 function displaySavedTexts() {
-  var savedTexts = JSON.parse(localStorage.getItem('savedTexts')) || [];
+  var savedTexts = JSON.parse(getCookie('savedTexts')) || [];
   var searchText = document.getElementById("searchText").value.trim().toLowerCase();
   var list = document.getElementById("savedTexts");
   list.innerHTML = "";
@@ -74,6 +27,33 @@ function displaySavedTexts() {
   });
 }
 
+// Function to set a cookie
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Function to get a cookie
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1, c.length);
+    }
+    if (c.indexOf(nameEQ) == 0) {
+      return c.substring(nameEQ.length, c.length);
+    }
+  }
+  return null;
+}
+
 // Call function to display locally saved texts when page loads
 window.onload = function() {
   displaySavedTexts();
@@ -81,35 +61,6 @@ window.onload = function() {
 
 // Function to clear locally saved texts
 function clearLocalTexts() {
-  localStorage.removeItem('savedTexts');
+  setCookie('savedTexts', '', -1); // Delete the cookie
   displaySavedTexts();
 }
-
-
-// Function to update character count
-function updateCharCount() {
-  var text = document.getElementById("textToShare").value;
-  var charCount = text.length;
-  document.getElementById("charCount").innerText = "Characters: " + charCount;
-}
-
-// Call function to display shared link when page loads
-window.onload = function() {
-  var params = new URLSearchParams(window.location.search);
-  var sharedText = params.get('text') || '';
-  document.getElementById("textToShare").value = sharedText;
-  generateSharedLink(); // Generate shared link with custom URL
-  updateCharCount();
-  displaySavedTexts();
-};
-
-// Add event listener for input text area
-document.getElementById("textToShare").addEventListener("input", function() {
-  updateCharCount();
-});
-
-// Add event listener for search input
-document.getElementById("searchText").addEventListener("input", function() {
-  displaySavedTexts();
-});
-
