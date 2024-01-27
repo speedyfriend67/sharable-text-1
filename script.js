@@ -14,7 +14,12 @@ function generateSharedLink() {
     sharedLink += '&custom=' + encodeURIComponent(customLinkText);
   }
 
-  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + customLinkText + "</a>";
+  var linkElement = document.getElementById("sharedLink");
+  linkElement.innerHTML = ""; // Clear existing content
+  var customLink = document.createElement("a");
+  customLink.href = sharedLink;
+  customLink.textContent = customLinkText;
+  linkElement.appendChild(customLink);
 }
 
 // Function to copy shared link to clipboard
