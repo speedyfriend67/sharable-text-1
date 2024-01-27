@@ -3,21 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shareable Text</title>
+<title>JustPaste.it</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="container">
   <div class="box">
-    <h1>Input Text</h1>
+    <h1>Enter Text</h1>
     <textarea id="textToShare" placeholder="Enter your text here..."></textarea>
-    <input type="text" id="customPath" placeholder="Custom path (optional)">
-    <input type="text" id="customLinkText" placeholder="Enter custom link text...">
     <button onclick="generateSharedLink()">Generate Link</button>
-    <button onclick="copyToClipboard()">Copy Link</button>
     <button onclick="saveTextLocally()">Save Locally</button>
-    <button onclick="clearText()">Clear Text</button>
     <span id="charCount">Characters: 0</span>
   </div>
   
@@ -28,8 +24,7 @@
 
   <div class="box">
     <h1>Locally Saved Texts</h1>
-    <input type="text" id="searchText" placeholder="Search locally saved texts...">
-    <ul id="savedTexts" class="scrollable-list"></ul>
+    <ul id="savedTexts"></ul>
     <button onclick="clearLocalTexts()">Clear Saved Texts</button>
   </div>
 </div>
@@ -37,4 +32,5 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
