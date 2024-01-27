@@ -41,11 +41,6 @@ function clearLocalTexts() {
   displaySavedTexts();
 }
 
-// Function to clear the text area
-function clearText() {
-  document.getElementById("textToShare").value = "";
-}
-
 // Call function to display locally saved texts when page loads
 window.onload = function() {
   displaySavedTexts();
