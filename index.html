@@ -44,6 +44,7 @@
     <textarea id="textToShare" placeholder="Enter your text here..."></textarea>
     <input type="text" id="customLinkText" placeholder="Enter custom link text...">
     <button onclick="generateSharedLink()">Generate Link</button>
+    <button onclick="saveTextLocally()">Save Locally</button>
   </div>
   
   <div class="box">
@@ -79,36 +80,14 @@ function generateSharedLink() {
     sharedLink = sharedLink + '&custom=' + encodeURIComponent(customLinkText);
   }
   
-  shortenLink(sharedLink);
+  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
 }
 
-// Function to shorten the link using the free-url-shortener service
-function shortenLink(longUrl) {
-  // free-url-shortener API endpoint
-  var apiUrl = 'https://free-url-shortener.rb.gy/api/url/shorten';
-  
-  // free-url-shortener API request payload
-  var payload = {
-    url: longUrl
-  };
-  
-  // free-url-shortener API request options
-  var options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  };
-  
-  // Make free-url-shortener API request
-  fetch(apiUrl, options)
-    .then(response => response.json())
-    .then(data => {
-      var shortUrl = data.shortUrl;
-      document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + shortUrl + "'>" + shortUrl + "</a>";
-    })
-    .catch(error => console.error('Error:', error));
+// Function to save text locally
+function saveTextLocally() {
+  var text = document.getElementById("textToShare").value;
+  localStorage.setItem('savedText', text);
+  alert('Text saved locally.');
 }
 
 // Call function to display shared link when page loads
@@ -121,3 +100,4 @@ window.onload = function() {
 
 </body>
 </html>
+
