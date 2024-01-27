@@ -37,8 +37,3 @@ button:hover {
 #charCount {
   margin-top: 10px;
 }
-
-.scrollable-list {
-  max-height: 200px;
-  overflow-y: auto;
-}
