@@ -79,7 +79,36 @@ function generateSharedLink() {
     sharedLink = sharedLink + '&custom=' + encodeURIComponent(customLinkText);
   }
   
-  document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
+  shortenLink(sharedLink);
+}
+
+// Function to shorten the link using the free-url-shortener service
+function shortenLink(longUrl) {
+  // free-url-shortener API endpoint
+  var apiUrl = 'https://free-url-shortener.rb.gy/api/url/shorten';
+  
+  // free-url-shortener API request payload
+  var payload = {
+    url: longUrl
+  };
+  
+  // free-url-shortener API request options
+  var options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  };
+  
+  // Make free-url-shortener API request
+  fetch(apiUrl, options)
+    .then(response => response.json())
+    .then(data => {
+      var shortUrl = data.shortUrl;
+      document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + shortUrl + "'>" + shortUrl + "</a>";
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 // Call function to display shared link when page loads
@@ -92,4 +121,3 @@ window.onload = function() {
 
 </body>
 </html>
-
