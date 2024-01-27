@@ -32,34 +32,38 @@
 <p id="sharedLink"></p>
 
 <script>
-// Function to save text to local storage
-function saveTextToStorage(text) {
-  localStorage.setItem('sharedText', text);
-}
-
-// Function to retrieve text from local storage
-function getTextFromStorage() {
-  return localStorage.getItem('sharedText') || '';
-}
-
 // Function to display shared link
-function displaySharedLink() {
-  var sharedText = getTextFromStorage();
-  var sharedLink = window.location.href + "?text=" + encodeURIComponent(sharedText);
+function displaySharedLink(textId) {
+  var sharedLink = window.location.href.split('?')[0] + '?id=' + textId;
   document.getElementById("sharedLink").innerHTML = "Share this link: <a href='" + sharedLink + "'>" + sharedLink + "</a>";
 }
-
-// Call function to display shared link when page loads
-window.onload = function() {
-  displaySharedLink();
-};
 
 // Function to share text
 function shareText() {
   var text = document.getElementById("textToShare").value;
-  saveTextToStorage(text);
-  displaySharedLink();
+  
+  fetch('save_text.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text: text })
+  })
+  .then(response => response.json())
+  .then(data => {
+    displaySharedLink(data.id);
+  })
+  .catch(error => console.error('Error:', error));
 }
+
+// Call function to display shared link when page loads
+window.onload = function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var textId = urlParams.get('id');
+  if (textId) {
+    displaySharedLink(textId);
+  }
+};
 </script>
 
 </body>
