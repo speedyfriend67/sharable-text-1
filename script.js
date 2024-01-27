@@ -74,17 +74,17 @@ function displaySavedTexts() {
   });
 }
 
-// Function to clear input text area
-function clearText() {
-  document.getElementById("textToShare").value = "";
-  generateSharedLink();
-}
+// Call function to display locally saved texts when page loads
+window.onload = function() {
+  displaySavedTexts();
+};
 
 // Function to clear locally saved texts
 function clearLocalTexts() {
   localStorage.removeItem('savedTexts');
   displaySavedTexts();
 }
+
 
 // Function to update character count
 function updateCharCount() {
